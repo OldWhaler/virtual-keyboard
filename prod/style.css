@@ -135,11 +135,19 @@ h6 {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.55);
+  background-color: rgba(255, 255, 255, 0.6);
   outline: none;
   font-size: 1.2em;
   color: #fff;
   vertical-align: top;
+}
+
+.keyboard__key:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+.keyboard__key:active {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .keyboard__key_close {
@@ -153,10 +161,6 @@ h6 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-}
-
-.keyboard__key:active {
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .keyboard__key_wide {
