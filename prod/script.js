@@ -20,7 +20,7 @@ const keyboard = {
     this.elements.keyboard.classList.add('keyboard', 'keyboard--hidden');
 
     const closeButton = document.createElement('div');
-    closeButton.classList.add('keyboard__key_close');
+    closeButton.classList.add('keyboard__key', 'keyboard__key_close');
     closeButton.innerHTML = '<span class="material-icons">disabled_visible</span>';
     this.elements.keyboard.append(closeButton);
 
@@ -158,14 +158,3 @@ window.addEventListener('DOMContentLoaded', () => {
 document.querySelector('#textarea').addEventListener('focus', () => {
   keyboard.openKeyboard();
 });
-
-// const arr = [];
-// document.querySelector('textarea').addEventListener('keydown', (event) => {
-//   const obj = {
-//     code: event.code,
-//     key: event.key,
-//   };
-
-//   arr.push(obj);
-//   console.log(JSON.stringify(arr));
-// });
