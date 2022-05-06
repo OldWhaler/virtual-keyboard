@@ -88,12 +88,24 @@ h6 {
 
 .keyboard {
   position: fixed;
-  left: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
   bottom: 0;
-  width: 100vw;
-  padding: 10px 0;
+  width: 855px;
+  padding: 10px;
   text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  row-gap: 6px;
+  -webkit-column-gap: 6px;
+          column-gap: 6px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   background-color: #1A1A1A;
+  border-radius: 10px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -103,7 +115,6 @@ h6 {
   transition: bottom 500ms;
   -webkit-box-shadow: 0 0 10px #1A1A1A;
           box-shadow: 0 0 10px #1A1A1A;
-  height: 100px;
 }
 
 .keyboard--hidden {
@@ -113,9 +124,7 @@ h6 {
 .keyboard__key {
   position: relative;
   height: 45px;
-  width: 6%;
-  max-width: 90px;
-  margin: 3px;
+  width: 50px;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -126,29 +135,45 @@ h6 {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.55);
   outline: none;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #fff;
   vertical-align: top;
 }
 
+.keyboard__key_close {
+  width: 855px;
+  height: 45px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.55);
+  border-radius: 4px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .keyboard__key:active {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .keyboard__key_wide {
-  width: 12%;
-  max-width: 120px;
+  width: 106px;
 }
 
 .keyboard__key_extra-wide {
-  width: 36%;
-  max-width: 500px;
+  width: 386px;
 }
 
 .keyboard__key_dark {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
 }
 
 .keyboard__key_activailible::after {
