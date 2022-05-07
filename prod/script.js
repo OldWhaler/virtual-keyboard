@@ -1,4 +1,4 @@
-document.body.insertAdjacentHTML('afterbegin', '<h1>RSS Виртуальная клавиатура</h1><textarea name="" id="textarea" placeholder ="Focus to open keyboard"></textarea>');
+document.body.insertAdjacentHTML('afterbegin', '<h1>RSS Виртуальная клавиатура</h1><textarea name="" id="textarea" placeholder ="Focus to open keyboard"></textarea> <p>Клавиатура создана в операционной системе Windows</p><p>Для переключения языка комбинация: левыe shift + alt</p>');
 
 const keyboard = {
   elements: {
@@ -15,35 +15,48 @@ const keyboard = {
     eng: [{ code: 'Backquote', key: '`' }, { code: 'Digit1', key: '1' }, { code: 'Digit2', key: '2' }, { code: 'Digit3', key: '3' }, { code: 'Digit4', key: '4' }, { code: 'Digit5', key: '5' }, { code: 'Digit6', key: '6' }, { code: 'Digit7', key: '7' }, { code: 'Digit8', key: '8' }, { code: 'Digit9', key: '9' }, { code: 'Digit0', key: '0' }, { code: 'Minus', key: '-' }, { code: 'Equal', key: '=' }, { code: 'Backspace', key: 'Backspace' }, { code: 'Tab', key: 'Tab' }, { code: 'KeyQ', key: 'q' }, { code: 'KeyW', key: 'w' }, { code: 'KeyE', key: 'e' }, { code: 'KeyR', key: 'r' }, { code: 'KeyT', key: 't' }, { code: 'KeyY', key: 'y' }, { code: 'KeyU', key: 'u' }, { code: 'KeyI', key: 'i' }, { code: 'KeyO', key: 'o' }, { code: 'KeyP', key: 'p' }, { code: 'BracketLeft', key: '[' }, { code: 'BracketRight', key: ']' }, { code: 'Backslash', key: '\\' }, { code: 'Delete', key: 'Delete' }, { code: 'CapsLock', key: 'CapsLock' }, { code: 'KeyA', key: 'a' }, { code: 'KeyS', key: 's' }, { code: 'KeyD', key: 'd' }, { code: 'KeyF', key: 'f' }, { code: 'KeyG', key: 'g' }, { code: 'KeyH', key: 'h' }, { code: 'KeyJ', key: 'j' }, { code: 'KeyK', key: 'k' }, { code: 'KeyL', key: 'l' }, { code: 'Semicolon', key: ';' }, { code: 'Quote', key: "'" }, { code: 'Enter', key: 'Enter' }, { code: 'ShiftLeft', key: 'Shift' }, { code: 'KeyZ', key: 'z' }, { code: 'KeyX', key: 'x' }, { code: 'KeyC', key: 'c' }, { code: 'KeyV', key: 'v' }, { code: 'KeyB', key: 'b' }, { code: 'KeyN', key: 'n' }, { code: 'KeyM', key: 'm' }, { code: 'Comma', key: ',' }, { code: 'Period', key: '.' }, { code: 'Slash', key: '/' }, { code: 'ArrowUp', key: 'ArrowUp' }, { code: 'ShiftRight', key: 'Shift' }, { code: 'ControlLeft', key: 'Control' }, { code: 'MetaLeft', key: 'Meta' }, { code: 'AltLeft', key: 'Alt' }, { code: 'Space', key: ' ' }, { code: 'AltRight', key: 'Alt' }, { code: 'ArrowLeft', key: 'ArrowLeft' }, { code: 'ArrowDown', key: 'ArrowDown' }, { code: 'ArrowRight', key: 'ArrowRight' }, { code: 'ControlRight', key: 'Control' }],
   },
 
+  handlers: {
+    bodyKeydownHandler(event) {
+      if (event.code === 'CapsLock') {
+        keyboard.changeCharacterCase();
+      }
+
+      if (event.shiftKey && event.altKey) {
+        keyboard.changeKeybordLang();
+      }
+    },
+  },
+
   init() {
     this.elements.keyboard = document.createElement('div');
     this.elements.keyboard.classList.add('keyboard', 'keyboard--hidden');
-
-    const closeButton = document.createElement('div');
-    closeButton.classList.add('keyboard__key', 'keyboard__key_close');
-    closeButton.innerHTML = '<span class="material-icons">disabled_visible</span>';
-    this.elements.keyboard.append(closeButton);
-
-    closeButton.addEventListener('click', () => this.closeKeyboard());
 
     this.elements.engKeysElementsNoCaps = this.createKeys(false, 'eng');
     this.elements.engKeysElementsCaps = this.createKeys(true, 'eng');
     this.elements.ruKeysElementsNoCaps = this.createKeys(false, 'ru');
     this.elements.ruKeysElementsCaps = this.createKeys(true, 'ru');
 
-    this.elements.keyboard.append(this.elements.ruKeysElementsCaps);
+    if (!sessionStorage.getItem('lang')) {
+      sessionStorage.setItem('lang', 'russian');
+      sessionStorage.setItem('capsLock', false);
+    }
+    this.addKeysIntoKeyboard(sessionStorage.getItem('capsLock') === 'true', sessionStorage.getItem('lang'));
     document.body.append(this.elements.keyboard);
-  },
 
-  closeKeyboard() {
-    this.elements.keyboard.classList.add('keyboard--hidden');
-  },
-  openKeyboard() {
-    this.elements.keyboard.classList.remove('keyboard--hidden');
+    document.body.addEventListener('keydown', (event) => {
+      this.handlers.bodyKeydownHandler(event);
+    });
   },
 
   createKeys(isCapsLockPressed, lang) {
-    const fragment = document.createDocumentFragment();
+    const result = [];
+
+    const closeButton = document.createElement('div');
+    closeButton.classList.add('keyboard__key', 'keyboard__key_close');
+    closeButton.innerHTML = '<span class="material-icons">disabled_visible</span>';
+    result.push(closeButton);
+
+    closeButton.addEventListener('click', () => this.closeKeyboard());
 
     const createIconHTML = (iconName) => `<span class="material-icons">${iconName}</span>`;
 
@@ -68,7 +81,10 @@ const keyboard = {
         case 'CapsLock':
           button.classList.add('keyboard__key_wide', 'keyboard__key_dark', 'keyboard__key_activailible');
           button.innerHTML = createIconHTML('keyboard_capslock');
-          button.addEventListener('click', () => button.classList.toggle('keyboard__key_active'));
+          button.addEventListener('click', () => {
+            button.classList.toggle('keyboard__key_active');
+            this.changeCharacterCase();
+          });
           break;
 
         case 'Enter':
@@ -144,9 +160,100 @@ const keyboard = {
           button.textContent = isCapsLockPressed ? elem.key.toUpperCase() : elem.key;
       }
 
-      fragment.append(button);
+      result.push(button);
     });
-    return fragment;
+    return result;
+  },
+
+  addKeysIntoKeyboard(isCapsLockPress, lang) {
+    let newKeys;
+
+    switch (lang) {
+      case 'english':
+        if (isCapsLockPress) {
+          newKeys = this.elements.engKeysElementsCaps;
+        } else {
+          newKeys = this.elements.engKeysElementsNoCaps;
+        }
+        break;
+
+      case 'russian':
+        if (isCapsLockPress) {
+          newKeys = this.elements.ruKeysElementsCaps;
+        } else {
+          newKeys = this.elements.ruKeysElementsNoCaps;
+        }
+        break;
+
+      default:
+        break;
+    }
+    this.elements.keyboard.innerHTML = '';
+    this.elements.keyboard.append(...newKeys);
+  },
+
+  changeCharacterCase() {
+    const newCapsLockValue = !(sessionStorage.getItem('capsLock') === 'true');
+    sessionStorage.setItem('capsLock', newCapsLockValue);
+
+    switch (sessionStorage.getItem('lang')) {
+      case 'english':
+        if (sessionStorage.getItem('capsLock') === 'true') {
+          this.addKeysIntoKeyboard(true, 'english');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.add('keyboard__key_active');
+        } else {
+          this.addKeysIntoKeyboard(false, 'english');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.remove('keyboard__key_active');
+        }
+        break;
+
+      case 'russian':
+        if (sessionStorage.getItem('capsLock') === 'true') {
+          this.addKeysIntoKeyboard(true, 'russian');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.add('keyboard__key_active');
+        } else {
+          this.addKeysIntoKeyboard(false, 'russian');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.remove('keyboard__key_active');
+        }
+        break;
+
+      default:
+        break;
+    }
+  },
+
+  changeKeybordLang() {
+    switch (sessionStorage.getItem('lang')) {
+      case 'russian':
+        sessionStorage.setItem('lang', 'english');
+        if (sessionStorage.getItem('capsLock') === 'true') {
+          this.addKeysIntoKeyboard(true, 'english');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.add('keyboard__key_active');
+        } else {
+          this.addKeysIntoKeyboard(false, 'english');
+        }
+        break;
+
+      case 'english':
+        sessionStorage.setItem('lang', 'russian');
+        if (sessionStorage.getItem('capsLock') === 'true') {
+          this.addKeysIntoKeyboard(true, 'russian');
+          this.elements.keyboard.querySelector('.keyboard__key_activailible').classList.add('keyboard__key_active');
+        } else {
+          this.addKeysIntoKeyboard(false, 'russian');
+        }
+        break;
+
+      default:
+        break;
+    }
+  },
+
+  closeKeyboard() {
+    this.elements.keyboard.classList.add('keyboard--hidden');
+  },
+  openKeyboard() {
+    this.elements.keyboard.classList.remove('keyboard--hidden');
   },
 
 };
