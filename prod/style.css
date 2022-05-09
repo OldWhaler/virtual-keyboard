@@ -135,7 +135,7 @@ h6 {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.7);
   outline: none;
   font-size: 1.2em;
   color: #fff;
@@ -143,11 +143,11 @@ h6 {
 }
 
 .keyboard__key:hover {
-  background-color: rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .keyboard__key:active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .keyboard__key_close {
@@ -172,7 +172,7 @@ h6 {
 }
 
 .keyboard__key_dark {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
   font-weight: bold;
 }
 
@@ -212,12 +212,36 @@ h1 {
   font-size: 1.5em;
 }
 
-#textarea:focus {
-  border: 2px solid #6dd208;
+#textarea::-webkit-input-placeholder {
+  color: #ff0000;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#textarea:-ms-input-placeholder {
+  color: #ff0000;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#textarea::-ms-input-placeholder {
+  color: #ff0000;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#textarea::placeholder {
+  color: #ff0000;
+  font-size: 1.5em;
+  text-align: center;
 }
 
 p {
   font-size: 1.5em;
   text-align: center;
   margin: 10px 0;
+}
+
+.pressed {
+  background-color: rgba(255, 255, 255, 0.1);
 }
