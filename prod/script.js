@@ -72,10 +72,6 @@ const keyboard = {
       if (!targetButton) return;
 
       switch (targetButton.dataset.keycode) {
-        case 'key_close':
-          keyboard.closeKeyboard();
-          break;
-
         case 'ShiftRight':
           setTimeout(() => keyboard.addShiftedKeysIntoKeyboard(event), 0);
           break;
@@ -245,6 +241,9 @@ const keyboard = {
       if (sessionStorage.getItem('altPressed') === 'true' && targetButton.dataset.keycode === 'ShiftLeft') {
         keyboard.changeKeybordLang();
         sessionStorage.setItem('altPressed', false);
+      }
+      if (targetButton.dataset.keycode === 'key_close') {
+        keyboard.closeKeyboard();
       }
 
       targetButton.blur();
