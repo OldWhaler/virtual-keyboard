@@ -1,4 +1,4 @@
-document.body.insertAdjacentHTML('afterbegin', '<h1>RSS Виртуальная клавиатура</h1><textarea name="" id="textarea" placeholder ="Клавиатура появляется при фокусировке на textarea или наборе текста на клавиатуре!!!"></textarea> <p>Клавиатура создана в операционной системе Windows</p><p>Для переключения языка комбинация: левыe alt + shift (перетаскиванием alt на shift) </p>');
+document.body.insertAdjacentHTML('afterbegin', '<h1>RSS Виртуальная клавиатура</h1><textarea name="" id="textarea" placeholder ="Клавиатура появляется при фокусировке на textarea или наборе текста на клавиатуре!!!"></textarea> <p>Клавиатура создана в операционной системе Windows</p><p>Для переключения языка комбинация: левыe alt + shift (перетаскиванием alt на shift) </p><p><a href="https://github.com/OldWhaler/virtual-keyboard">Ссылка на репо</a></p>');
 
 const keyboard = {
   elements: {
